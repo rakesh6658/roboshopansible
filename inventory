@@ -2,3 +2,5 @@
 mongodb.joindevops.store
 [catalogue]
 catalogue.joindevops.store
+[web]
+web.joindevops.store

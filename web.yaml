@@ -1,0 +1,16 @@
+- name: creating web component
+  hosts: web
+  become: yes
+  tasks:
+  - name: installing nginx
+    ansible.builtin.yum:
+      name: nginx
+      state: installed
+  - name: enabling and starting nginx
+    ansible.builtin.service:
+      name: nginx
+      enabled: yes
+  - name: Remove files in html directory
+    ansible.builtin.file:
+      path: /usr/share/nginx/html/*
+      state: absent    
