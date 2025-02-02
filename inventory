@@ -6,3 +6,5 @@ catalogue.joindevops.store
 web.joindevops.store
 [redis]
 redis.joindevops.store
+[cart]
+cart.joindevops.store
