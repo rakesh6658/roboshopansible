@@ -1,0 +1,13 @@
+- name: creating catalogue
+  hosts: catalogue
+  become: yes
+  tasks:
+  - name: disabling and enabling nodejs
+    ansible.builtin.shell: "{{item}}"
+    loop:
+      - dnf module disable nodejs -y
+      - dnf module enable nodejs:20 -y
+  - name: installing nodejs
+    ansible.builtin.yum:
+      name: nodejs
+      state: installed    

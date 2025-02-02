@@ -1,2 +1,4 @@
 [mongodb]
 mongodb.joindevops.store
+[catalogue]
+catalogue.joindevops.store
