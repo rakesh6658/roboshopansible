@@ -11,3 +11,18 @@
     ansible.builtin.yum:
       name: nodejs
       state: installed    
+  - name: checking user
+    ansible.builtin.command: id roboshop
+    register: out
+    ignore_errors: true
+  - name: Add the user 'roboshop' after validating
+    when: out.rc!=0
+    ansible.builtin.user:
+     name: roboshop   
+  - name: checking app directory exists or not
+    ansible.builtin.stat:
+      path: /app
+    register: output
+  - name: printing output
+    ansible.bultin.debug:
+      msg: "{{output}}"      
