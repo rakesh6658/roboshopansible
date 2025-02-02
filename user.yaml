@@ -1,0 +1,72 @@
+- name: creating user
+  hosts: user
+  become: yes
+  tasks:
+  - name: disabling and enabling nodejs
+    ansible.builtin.shell: "{{item}}"
+    loop:
+      - dnf module disable nodejs -y
+      - dnf module enable nodejs:20 -y
+  - name: installing nodejs
+    ansible.builtin.yum:
+      name: nodejs
+      state: installed    
+  - name: checking user
+    ansible.builtin.command: id roboshop
+    register: out
+    ignore_errors: true
+  - name: Add the user 'roboshop' after validating
+    when: out.rc!=0
+    ansible.builtin.user:
+     name: roboshop   
+  - name: checking app directory exists or not
+    ansible.builtin.stat:
+      path: /app
+    register: output
+  - name: printing output
+    ansible.builtin.debug:
+      msg: "{{output}}"      
+  - name: Create a /app directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
+    when: output.stat.exists == false  
+  - name: Download user.zip
+    ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/user.zip
+      dest: /tmp/user.zip
+  - name: Unarchive user.zip in app directory
+    ansible.builtin.unarchive:
+      src: /tmp/user.zip
+      dest: /app
+      remote_src: yes  
+  - name: installing dependencies
+    ansible.builtin.shell: npm install
+    args:
+      chdir: /app
+
+  - name: Copy user.service
+    ansible.builtin.copy:
+      src: user.service
+      dest: /etc/systemd/system/user.service
+  - name: daemon-reload 
+    ansible.builtin.systemd_service:
+      daemon_reload: true
+  - name: starting and enabling user
+    ansible.builtin.service:
+      name: user
+      state: started
+      enabled: yes   
+  - name: Copy mongo.repo
+    ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo     
+  - name: installing mongodb-client
+    ansible.builtin.yum:
+      name: mongodb-mongosh
+      state: installed  
+  - name: loading schema
+    ansible.builtin.shell: mongosh --host mongodb.joindevops.store  </app/schema/user.js        
+
+       
+

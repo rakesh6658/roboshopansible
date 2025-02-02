@@ -8,3 +8,5 @@ web.joindevops.store
 redis.joindevops.store
 [cart]
 cart.joindevops.store
+[user]
+user.joindevops.store
