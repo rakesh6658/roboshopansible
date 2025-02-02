@@ -14,3 +14,20 @@
     ansible.builtin.file:
       path: /usr/share/nginx/html/*
       state: absent    
+  - name: Downloading web.zip
+    ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/web.zip
+      dest: /tmp/web.zip
+  - name: Unarchive web.zip in app directory
+    ansible.builtin.unarchive:
+      src: /tmp/web.zip
+      dest: usr/share/nginx/html
+      remote_src: yes  
+  - name: copying roboshop.conf
+    ansible.builtin.copy:
+      src: roboshop.conf
+      dest: /etc/nginx/default.d/roboshop.conf
+  - name: restarting nginx
+    ansible.builtin.service:
+      name: nginx
+      state: restarted            
