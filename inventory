@@ -4,3 +4,5 @@ mongodb.joindevops.store
 catalogue.joindevops.store
 [web]
 web.joindevops.store
+[redis]
+redis.joindevops.store
