@@ -56,7 +56,17 @@
     ansible.builtin.service:
       name: catalogue
       state: started
-      enabled: yes     
+      enabled: yes   
+  - name: Copy mongo.repo
+    ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo     
+  - name: installing mongodb-client
+    ansible.builtin.yum:
+      name: mongodb-mongosh
+      state: installed  
+  - name: loading schema
+    ansible.builtin.shell: mongosh --host mongodb.joindevops.store  </app/schema/catalogue.js        
 
        
 
