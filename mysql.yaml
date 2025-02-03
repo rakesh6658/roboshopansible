@@ -1,0 +1,14 @@
+- name: creating mysql component
+  hosts: mysql
+  become: yes
+  tasks:
+  - name: installing mysql server
+    ansible.builtin.yum:
+      name: mysql-server
+      state: installed
+  - name: starting and enabling mysql
+    ansible.builtin.service:
+      name: mysqld
+      state: started
+      enabled: yes
+          
