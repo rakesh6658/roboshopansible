@@ -3,7 +3,7 @@
   become: yes
   tasks:
   - name: installing redis
-    ansible.builtin.yum:
+    ansible.builtin.dnf:
       name: redis
       state: installed
   - name: updating listen ip address
