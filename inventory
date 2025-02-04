@@ -16,3 +16,5 @@ mysql.joindevops.store
 shipping.joindevops.store
 [rabbitmq]
 rabbitmq.joindevops.store
+[payment]
+payment.joindevops.store
