@@ -14,3 +14,5 @@ user.joindevops.store
 mysql.joindevops.store
 [shipping]
 shipping.joindevops.store
+[rabbitmq]
+rabbitmq.joindevops.store
