@@ -1,10 +1,10 @@
-- name: creating payment
-  hosts: payment
+- name: creating dispatch
+  hosts: dispatch
   become: yes
   tasks:
-  - name: installing python
+  - name: installing golang
     ansible.builtin.yum:
-      name: python3.11 gcc python3-devel
+      name: golang
       state: installed    
   - name: checking user
     ansible.builtin.command: id roboshop
@@ -26,30 +26,34 @@
       path: /app
       state: directory
     when: output.stat.exists == false  
-  - name: Download payment.zip
+  - name: Download dispatch.zip
     ansible.builtin.get_url:
-      url: https://roboshop-builds.s3.amazonaws.com/payment.zip
-      dest: /tmp/payment.zip
-  - name: Unarchive payment.zip in app directory
+      url: https://roboshop-builds.s3.amazonaws.com/dispatch.zip
+      dest: /tmp/dispatch.zip
+  - name: Unarchive dispatch.zip in app directory
     ansible.builtin.unarchive:
-      src: /tmp/payment.zip
+      src: /tmp/dispatch.zip
       dest: /app
       remote_src: yes  
   - name: installing dependencies
-    ansible.builtin.shell: pip3.11 install -r requirements.txt
+    ansible.builtin.shell: "{{item}}"
+    loop:
+      - go mod init dispatch
+      - go get 
+      - go build
     args:
       chdir: /app
 
-  - name: Copy payment.service
+  - name: Copy dispatch.service
     ansible.builtin.copy:
-      src: payment.service
-      dest: /etc/systemd/system/payment.service
+      src: dispatch.service
+      dest: /etc/systemd/system/dispatch.service
   - name: daemon-reload 
     ansible.builtin.systemd_service:
       daemon_reload: true
-  - name: starting and enabling payment
+  - name: starting and enabling dispatch
     ansible.builtin.service:
-      name: payment
+      name: dispatch
       state: started
       enabled: yes   
   

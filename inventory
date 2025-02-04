@@ -18,3 +18,5 @@ shipping.joindevops.store
 rabbitmq.joindevops.store
 [payment]
 payment.joindevops.store
+[dispatch]
+dispatch.joindevops.store
