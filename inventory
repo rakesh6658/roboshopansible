@@ -10,3 +10,5 @@ redis.joindevops.store
 cart.joindevops.store
 [user]
 user.joindevops.store
+[mysql]
+mysql.joindevops.store
