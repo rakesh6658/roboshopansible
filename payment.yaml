@@ -4,8 +4,12 @@
   tasks:
   - name: installing python
     ansible.builtin.yum:
-      name: python3.11 gcc python3-devel
-      state: installed    
+      name: "{{item}}"
+      state: installed 
+    loop:
+      - python3.11
+      - gcc 
+      - python3-devel    
   - name: checking user
     ansible.builtin.command: id roboshop
     register: out
